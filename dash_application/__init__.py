@@ -11,7 +11,7 @@ import plotly.graph_objects as go
 import pandas as pd
 
 from dash_bootstrap_templates import load_figure_template
-
+import dash_application.data_functions as data_functions
 
 
 
@@ -48,11 +48,12 @@ load_figure_template(templates)
 # url = 'https://drive.google.com/file/d/114FNn99SAQQsLB_-l0vItgs1Xj-6RtzQ/view?usp=share_link'
 # path = 'https://drive.google.com/uc?export=download&id='+url.split('/')[-2]
 
-data = {'first_column':  ['first_value', 'second_value'],
-        'second_column': ['first_value', 'second_value'],
-        }
+# data = {'first_column':  ['first_value', 'second_value'],
+#         'second_column': ['first_value', 'second_value'],
+#         }
 
-df = pd.DataFrame(data)
+# df = pd.DataFrame(data)
+df = data_functions.story_transitions_data()
 
 def create_dash_application(flask_app):
     # dash_app = dash.Dash(server=flask_app, name="Dashboard", url_base_pathname="/dash/", external_stylesheets=[dbc.themes.CERULEAN])
