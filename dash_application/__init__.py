@@ -41,14 +41,18 @@ load_figure_template(templates)
 
 ########## DATA_FILES ##############
 
-df_local = pd.read_csv('./datafiles/next_payments_test_data_2.csv')
-df = pd.read_csv('https://raw.githubusercontent.com/plotly/datasets/master/solar.csv')
+# df_local = pd.read_csv('./datafiles/next_payments_test_data_2.csv')
+# df = pd.read_csv('https://raw.githubusercontent.com/plotly/datasets/master/solar.csv')
 
 # url = 'https://drive.google.com/file/d/1DmH3A7I9eONqE2JZKLCCC_dGd3dmDbLO/view?usp=share_link'
 # url = 'https://drive.google.com/file/d/114FNn99SAQQsLB_-l0vItgs1Xj-6RtzQ/view?usp=share_link'
 # path = 'https://drive.google.com/uc?export=download&id='+url.split('/')[-2]
 
+data = {'first_column':  ['first_value', 'second_value'],
+        'second_column': ['first_value', 'second_value'],
+        }
 
+df = pd.DataFrame(data)
 
 def create_dash_application(flask_app):
     # dash_app = dash.Dash(server=flask_app, name="Dashboard", url_base_pathname="/dash/", external_stylesheets=[dbc.themes.CERULEAN])
@@ -79,14 +83,25 @@ def create_dash_application(flask_app):
                                           id='input_select',
                                           optionHeight=50,
                                       ),
+                                      html.Div(
+                                          style={
+                                              'paddingLeft': '15px', 'paddingRight': '20px', 'paddingTop': '5px',
+                                                 'paddingBottom': '5px',
+                                              'marginTop': '20px',
+                                                 # 'color': 'white'
+                                                 },
+                                          children=[
+
+                                          ]),
                                       dash_table.DataTable(
                                           id='activity_status_table',
                                           data=df.to_dict('records'),
                                           columns=[{"name": i, "id": i} for i in df.columns],
                                           style_table={
                                                # 'height': '600px',
-                                               'overflowX': 'auto',
-                                               'overflowY': 'auto'},
+                                               # 'overflowX': 'auto',
+                                               # 'overflowY': 'auto'
+                                          },
                                            filter_action='native',
                                            sort_action="native",
                                            fixed_rows={
@@ -101,13 +116,14 @@ def create_dash_application(flask_app):
                                            'whiteSpace': 'normal',
                                            'height': 'auto'},
                                                        style_cell={
-                                                           'minWidth': '180px', 'width': '180px',
-                                                           'maxWidth': '180px',
-                                                           'whiteSpace': 'normal',
-                                                           'textOverflow': 'ellipsis',
-                                                           'overflow': 'hidden'
+                                                           'textAlign': 'left',
+                                                           # 'minWidth': '180px', 'width': '180px',
+                                                           # 'maxWidth': '180px',
+                                                           # 'whiteSpace': 'normal',
+                                                           # 'textOverflow': 'ellipsis',
+                                                           # 'overflow': 'hidden'
                                                        },
-                                                           export_format="csv"
+                                                           # export_format="csv"
                                                            ),
 
                                   ]
@@ -141,7 +157,7 @@ def init_callbacks(dash_app):
                           Input('input_select', 'value'),
                       ])
 
-    def deals_tab():
-        data = df
+    def deals_tab(input_select):
+        data = df.to_dict('records')
 
         return [data]
