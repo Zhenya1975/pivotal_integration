@@ -2,6 +2,8 @@ import os
 
 import pandas as pd
 import requests
+import datetime
+
 
 # TOKEN = os.getenv('TOKEN')
 TOKEN = 'a37062a36393726f3911dde489fe88e8'
@@ -9,7 +11,9 @@ PROJECT_ID = 2615506
 headers = {
     'X-TrackerToken': f'{TOKEN}',
 }
-
+today = datetime.datetime.now()
+now = today.isoformat()
+print(now, type(now))
 
 def story_transitions_data():
     response = requests.get('https://www.pivotaltracker.com/services/v5/projects/2615506/story_transitions',
@@ -32,3 +36,20 @@ def story_transitions_data():
     # print(story_transitions_df)
     return story_transitions_df
 # story_transitions()
+
+def current_tasks():
+    """список задач в Current"""
+
+    params = {
+        'date_format': 'millis',
+        'accepted_before': now
+    }
+
+    response = requests.get(
+        'https://www.pivotaltracker.com/services/v5/projects/2615506/stories',
+        headers=headers,
+        params=params
+    )
+
+    print(response.json())
+current_tasks()
