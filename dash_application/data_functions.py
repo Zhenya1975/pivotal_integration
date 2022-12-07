@@ -3,6 +3,7 @@ import os
 import pandas as pd
 import requests
 import datetime
+import json
 
 
 # TOKEN = os.getenv('TOKEN')
@@ -42,7 +43,7 @@ def current_tasks():
 
     params = {
         'date_format': 'millis',
-        'accepted_before': now
+        # 'accepted_before': now
     }
 
     response = requests.get(
@@ -50,6 +51,9 @@ def current_tasks():
         headers=headers,
         params=params
     )
+    data_temp = response.json()
+    json_data = json.dumps(data_temp)
+    df_stories = pd.read_json(json_data)
 
-    print(response.json())
-current_tasks()
+    return df_stories
+# current_tasks()
